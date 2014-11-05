@@ -32,6 +32,9 @@
             this.labelItemType = new System.Windows.Forms.Label();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonOk = new System.Windows.Forms.Button();
+            this.textBoxConnect = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.buttonConnect = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // comboBoxType
@@ -66,12 +69,42 @@
             // 
             // buttonOk
             // 
+            this.buttonOk.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.buttonOk.Location = new System.Drawing.Point(430, 276);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 3;
             this.buttonOk.Text = "Ok";
             this.buttonOk.UseVisualStyleBackColor = true;
+            // 
+            // textBoxConnect
+            // 
+            this.textBoxConnect.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxConnect.Location = new System.Drawing.Point(113, 33);
+            this.textBoxConnect.Name = "textBoxConnect";
+            this.textBoxConnect.Size = new System.Drawing.Size(435, 20);
+            this.textBoxConnect.TabIndex = 4;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 36);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(84, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "TFS Connection";
+            // 
+            // buttonConnect
+            // 
+            this.buttonConnect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonConnect.Location = new System.Drawing.Point(554, 31);
+            this.buttonConnect.Name = "buttonConnect";
+            this.buttonConnect.Size = new System.Drawing.Size(32, 23);
+            this.buttonConnect.TabIndex = 6;
+            this.buttonConnect.Text = "...";
+            this.buttonConnect.UseVisualStyleBackColor = true;
+            this.buttonConnect.Click += new System.EventHandler(this.buttonConnect_Click);
             // 
             // CreateWorkItem
             // 
@@ -80,6 +113,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
             this.ClientSize = new System.Drawing.Size(598, 311);
+            this.Controls.Add(this.buttonConnect);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.textBoxConnect);
             this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.labelItemType);
@@ -88,7 +124,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "CreateWorkItem";
-            this.Text = "Create WorkItem";
+            this.Text = "Create New WorkItem";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -100,5 +136,8 @@
         private System.Windows.Forms.Label labelItemType;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonOk;
+        private System.Windows.Forms.TextBox textBoxConnect;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button buttonConnect;
     }
 }

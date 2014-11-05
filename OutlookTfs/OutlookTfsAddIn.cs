@@ -1,13 +1,8 @@
 ﻿using System;
-using System.IO;
-using System.Text;
 using System.Windows.Forms;
+using Microsoft.Office.Interop.Outlook;
 using Microsoft.TeamFoundation.Client;
-using Microsoft.TeamFoundation.WorkItemTracking.Client;
-using NetOffice.OutlookApi;
-using NetOffice.OutlookApi.Enums;
-using Action = NetOffice.OutlookApi.Action;
-using Attachment = NetOffice.OutlookApi.Attachment;
+using Action = Microsoft.Office.Interop.Outlook.Action;
 
 namespace OutlookTfs
 {
@@ -19,27 +14,36 @@ namespace OutlookTfs
         private const string TfsProject = "HELM";
 
         private Explorer _explorer;
+        private SimpleContainer _container;
 
         private void OutlookTfsAddInStartup(object sender, EventArgs e)
         {
-            // cache the explorer object
-            _explorer = (Explorer) Application.ActiveExplorer();
-
+            _explorer = Application.ActiveExplorer();
+            _container = new SimpleContainer() //{ Configuration = new Dictionary<string, object>() { { "TfsServer", "http://vtom2010:8080/tfs/main" } } }
+                .RegisterSingle(_explorer)
+                .Register<TfsConnection>(container => TfsTeamProjectCollectionFactory.GetTeamProjectCollection(new Uri(TfsServer)))
+                .Register<IView>(container => new NewWorkItem())
+                .Register<IViewModel>(container => new ViewModel())
+                .Register<IPresenter>(container => new Presenter(container)
+                {
+                    View = container.Create<IView>(),
+                    ViewModel = container.Create<IViewModel>()
+                });
             // when an email selection changes this event will fire
-            _explorer.SelectionChangeEvent += ExplorerSelectionChange;
+            _explorer.SelectionChange += ExplorerSelectionChange;
         }
 
         // event fired when any selection changes.
-        void ExplorerSelectionChange()
+        public void ExplorerSelectionChange()
         {
-            foreach (object selectedItem in _explorer.Selection)
+            foreach (var selectedItem in _explorer.Selection)
             {
                 // we only want to deal with selected mail items
                 var item = selectedItem as MailItem;
                 if (item != null)
                 {
                     // see if the action already exists on mail item
-                    Action newAction = item.Actions[CreateNewPrompt];
+                    var newAction = item.Actions[CreateNewPrompt];
 
                     // and create it if it does not
                     if (newAction == null)
@@ -52,12 +56,12 @@ namespace OutlookTfs
                     }
 
                     // add the event handler for our action
-                    item.CustomActionEvent += ItemCustomAction;
+                    item.CustomAction += ItemCustomAction;
                 }
             }
         }
 
-        void ItemCustomAction(object action, object response, ref bool cancel)
+        public void ItemCustomAction(object action, object response, ref bool cancel)
         {
             try
             {
@@ -71,53 +75,55 @@ namespace OutlookTfs
                             var mailItem = _explorer.Selection[1] as MailItem;
                             if (mailItem != null)
                             {
-                                var form = new CreateWorkItem();
-                                var dialogRes = form.ShowDialog();
-                                if (dialogRes == DialogResult.Cancel)
-                                    return;
-                                var tfs = TfsTeamProjectCollectionFactory.GetTeamProjectCollection(new Uri(TfsServer));
-                                var store = (WorkItemStore)tfs.GetService(typeof(WorkItemStore));
+                                var form = _container.Create<IPresenter>();
+                                form.Initialize(mailItem);
 
-                                WorkItemTypeCollection workItemTypes = store.Projects[TfsProject].WorkItemTypes;
-                                WorkItemType wit = workItemTypes["bug"];
-                                var workItem = new WorkItem(wit)
-                                                   {
-                                                       Title = mailItem.Subject,
-                                                       Description = mailItem.Body,
-                                                       //IterationPath = "Iteration 3",
-                                                       AreaPath = "HELM",
-                                                   };
-                                //if (MessageBox.Show(mailItem.Body, "Text", MessageBoxButtons.OKCancel) ==
-                                //    DialogResult.Cancel)
+                                //    //new CreateWorkItem();
+                                //var dialogRes = form.ShowDialog();
+                                //if (dialogRes == DialogResult.Cancel)
                                 //    return;
-                                var assigned = workItem.Fields["Assigned To"];
-                                assigned.Value = tfs.AuthorizedIdentity.DisplayName;
+                                //TfsTeamProjectCollection tfs = 
+                                //    //TfsTeamProjectCollectionFactory.GetTeamProjectCollection(new Uri(TfsServer));
+                                //var store = (WorkItemStore)tfs.GetService(typeof(WorkItemStore));
 
-                                foreach (Attachment mailattach in mailItem.Attachments)
-                                {
-                                    var file = Path.Combine(Environment.CurrentDirectory, mailattach.FileName);
-                                    mailattach.SaveAsFile(file);
+                                //WorkItemTypeCollection workItemTypes = store.Projects[TfsProject].WorkItemTypes;
+                                //WorkItemType wit = workItemTypes["bug"];
+                                //var workItem = new WorkItem(wit)
+                                //                   {
+                                //                       Title = mailItem.Subject,
+                                //                       Description = mailItem.Body,
+                                //                       //IterationPath = "Iteration 3",
+                                //                       AreaPath = "HELM",
+                                //                   };
+                                ////if (MessageBox.Show(mailItem.Body, "Text", MessageBoxButtons.OKCancel) ==
+                                ////    DialogResult.Cancel)
+                                ////    return;
+                                //var assigned = workItem.Fields["Assigned To"];
+                                //assigned.Value = tfs.AuthorizedIdentity.DisplayName;
 
-                                    workItem.Attachments.Add(
-                                        new Microsoft.TeamFoundation.WorkItemTracking.Client.Attachment(file,
-                                                                                                        mailattach
-                                                                                                            .DisplayName));
-                                }
-                                var validationResult = workItem.Validate();
+                                //foreach (Microsoft.Office.Interop.Outlook.Attachment mailattach in mailItem.Attachments)
+                                //{
+                                //    var file = Path.Combine(Environment.CurrentDirectory, mailattach.DisplayName);
+                                //    mailattach.SaveAsFile(file);
 
-                                if (validationResult.Count == 0)
-                                {
-                                    workItem.Save();
-                                    MessageBox.Show(string.Format("Created bug {0}", workItem.Id));
-                                }
-                                else
-                                {
-                                    var tt = new StringBuilder();
-                                    foreach (var res in validationResult)
-                                        tt.AppendLine(res.ToString());
+                                //    workItem.Attachments.Add(
+                                //        new Microsoft.TeamFoundation.WorkItemTracking.Client.Attachment(file, mailattach.DisplayName));
+                                //}
+                                //var validationResult = workItem.Validate();
 
-                                    MessageBox.Show(tt.ToString());
-                                }
+                                //if (validationResult.Count == 0)
+                                //{
+                                //    workItem.Save();
+                                //    MessageBox.Show(string.Format("Created bug {0}", workItem.Id));
+                                //}
+                                //else
+                                //{
+                                //    var tt = new StringBuilder();
+                                //    foreach (var res in validationResult)
+                                //        tt.AppendLine(res.ToString());
+
+                                //    MessageBox.Show(tt.ToString());
+                                //}
                             }
                         }
                         finally

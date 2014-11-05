@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
+using Microsoft.TeamFoundation.Client;
 
 namespace OutlookTfs
 {
@@ -14,6 +9,13 @@ namespace OutlookTfs
         public CreateWorkItem()
         {
             InitializeComponent();
+        }
+
+        private void buttonConnect_Click(object sender, EventArgs e)
+        {
+            var tfsPp = new TeamProjectPicker(TeamProjectPickerMode.MultiProject, false, new UICredentialsProvider());
+            tfsPp.ShowDialog();
+           // tfsPp.SelectedTeamProjectCollection
         }
     }
 }
