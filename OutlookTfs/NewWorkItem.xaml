@@ -1,16 +1,24 @@
-﻿<Window x:Class="OutlookTfs.NewWorkItem"
+﻿<Window
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" Height="297" Width="412">
+             xmlns:local="clr-namespace:OutlookTfs" x:Class="OutlookTfs.NewWorkItem" 
+             mc:Ignorable="d" Height="297" Width="412" Title="New TFS item">
+    <Window.DataContext>
+        <local:ViewModel/>
+    </Window.DataContext>
     <Grid Height="266" VerticalAlignment="Bottom">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="231*"/>
+            <ColumnDefinition Width="173*"/>
+        </Grid.ColumnDefinitions>
         <Label Content="Item type" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="85"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="100,56,0,0" TextWrapping="Wrap" Text="tfs server" VerticalAlignment="Top" Width="252"/>
-        <Button Content="..." HorizontalAlignment="Left" Margin="357,58,0,0" VerticalAlignment="Top" Width="37" RenderTransformOrigin="2.946,0.95"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="100,56,0,0" TextWrapping="Wrap" Text="tfs server" VerticalAlignment="Top" Width="252" Grid.ColumnSpan="2"/>
+        <Button Content="..." HorizontalAlignment="Left" Margin="126,58,0,0" VerticalAlignment="Top" Width="37" RenderTransformOrigin="2.946,0.95" Grid.Column="1" ToolTip="Change TFS connection" Cursor="Hand" Command="{Binding ChangeConnectionCommand}"/>
         <Label Content="Connection" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" Width="85"/>
-        <Button Content="Cancel" HorizontalAlignment="Left" Margin="319,236,0,0" VerticalAlignment="Top" Width="75" IsCancel="True"/>
-        <Button Content="OK" HorizontalAlignment="Left" Margin="239,236,0,0" VerticalAlignment="Top" Width="75" IsDefault="True"/>
+        <Button Content="Cancel" HorizontalAlignment="Left" Margin="88,236,0,0" VerticalAlignment="Top" Width="75" IsCancel="True" Grid.Column="1"/>
+        <Button Content="OK" HorizontalAlignment="Left" Margin="8,236,0,0" VerticalAlignment="Top" Width="75" IsDefault="True" Grid.Column="1" Command="{Binding OkCommand}"/>
         <ComboBox HorizontalAlignment="Left" Margin="100,14,0,0" VerticalAlignment="Top" Width="120"/>
     </Grid>
 </Window>

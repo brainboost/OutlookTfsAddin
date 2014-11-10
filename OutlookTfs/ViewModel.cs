@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows.Input;
+using Microsoft.TeamFoundation.Client;
 
 namespace OutlookTfs
 {
@@ -8,6 +9,12 @@ namespace OutlookTfs
     /// </summary>
     public class ViewModel : IViewModel, INotifyPropertyChanged
     {
+        public string ItemType { get; set; }
+
+        public string TfsServer { get; set; }
+
+        public TfsTeamProjectCollection TfsConnection { get; set; }
+
         /// <summary>
         /// Occurs when a property value changes
         /// </summary>
@@ -23,6 +30,8 @@ namespace OutlookTfs
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public ICommand Command { get; set; }
+        public ICommand OkCommand { get; set; }
+
+        public ICommand ChangeConnectionCommand { get; set; }
     }
 }

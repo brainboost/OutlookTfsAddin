@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{024E7C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutlookTfs", "OutlookTfs\OutlookTfs.csproj", "{CAE68A3E-E5DE-4370-A09E-CB725C0A59AF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplication1", "WpfApplication1\WpfApplication1.csproj", "{4A5D9E6D-ACC6-4684-8133-734AE353C20E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +24,10 @@ Global
 		{CAE68A3E-E5DE-4370-A09E-CB725C0A59AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAE68A3E-E5DE-4370-A09E-CB725C0A59AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAE68A3E-E5DE-4370-A09E-CB725C0A59AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A5D9E6D-ACC6-4684-8133-734AE353C20E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A5D9E6D-ACC6-4684-8133-734AE353C20E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A5D9E6D-ACC6-4684-8133-734AE353C20E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A5D9E6D-ACC6-4684-8133-734AE353C20E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
