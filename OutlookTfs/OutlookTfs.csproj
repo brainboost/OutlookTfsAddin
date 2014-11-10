@@ -217,7 +217,6 @@
     <Compile Include="IContainer.cs" />
     <Compile Include="IPresenter.cs" />
     <Compile Include="IView.cs" />
-    <Compile Include="IViewModel.cs" />
     <Compile Include="NewWorkItem.xaml.cs">
       <DependentUpon>NewWorkItem.xaml</DependentUpon>
     </Compile>
@@ -226,7 +225,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SimpleContainer.cs" />
-    <Compile Include="ViewModel.cs" />
+    <Compile Include="AppViewModel.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

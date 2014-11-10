@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:OutlookTfs" x:Class="OutlookTfs.NewWorkItem" 
              mc:Ignorable="d" Height="297" Width="412" Title="New TFS item">
     <Window.DataContext>
-        <local:ViewModel/>
+        <local:AppViewModel/>
     </Window.DataContext>
     <Grid Height="266" VerticalAlignment="Bottom">
         <Grid.ColumnDefinitions>
@@ -14,11 +14,12 @@
             <ColumnDefinition Width="173*"/>
         </Grid.ColumnDefinitions>
         <Label Content="Item type" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="85"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="100,56,0,0" TextWrapping="Wrap" Text="tfs server" VerticalAlignment="Top" Width="252" Grid.ColumnSpan="2"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="100,56,0,0" TextWrapping="Wrap" Text="{Binding TfsConnection.DisplayName, Mode=OneWay}" VerticalAlignment="Top" Width="252" Grid.ColumnSpan="2"/>
         <Button Content="..." HorizontalAlignment="Left" Margin="126,58,0,0" VerticalAlignment="Top" Width="37" RenderTransformOrigin="2.946,0.95" Grid.Column="1" ToolTip="Change TFS connection" Cursor="Hand" Command="{Binding ChangeConnectionCommand}"/>
         <Label Content="Connection" HorizontalAlignment="Left" Margin="10,52,0,0" VerticalAlignment="Top" Width="85"/>
         <Button Content="Cancel" HorizontalAlignment="Left" Margin="88,236,0,0" VerticalAlignment="Top" Width="75" IsCancel="True" Grid.Column="1" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
         <Button Content="OK" HorizontalAlignment="Left" Margin="8,236,0,0" VerticalAlignment="Top" Width="75" IsDefault="True" Grid.Column="1" Command="{Binding OkCommand}"/>
-        <ComboBox HorizontalAlignment="Left" Margin="100,14,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox HorizontalAlignment="Left" Margin="100,14,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding ItemTypes, Mode=OneWay}" IsEditable="True" 
+                  SelectedIndex="0" SelectedValue="{Binding ItemType}"/>
     </Grid>
 </Window>

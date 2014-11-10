@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{024E7C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutlookTfs", "OutlookTfs\OutlookTfs.csproj", "{CAE68A3E-E5DE-4370-A09E-CB725C0A59AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplication1", "WpfApplication1\WpfApplication1.csproj", "{4A5D9E6D-ACC6-4684-8133-734AE353C20E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "WpfApplication1\TestApp.csproj", "{4A5D9E6D-ACC6-4684-8133-734AE353C20E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
