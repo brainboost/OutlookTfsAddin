@@ -23,11 +23,11 @@ namespace OutlookTfs
                 .RegisterSingle(_explorer)
                 .Register<TfsConnection>(container => TfsTeamProjectCollectionFactory.GetTeamProjectCollection(new Uri(TfsServer)))
                 .Register<IView>(container => new NewWorkItem())
-                .Register<IViewModel>(container => new ViewModel())
+                .Register<ViewModel>(container => new ViewModel())
                 .Register<IPresenter>(container => new Presenter(container)
                 {
                     View = container.Create<IView>(),
-                    ViewModel = container.Create<IViewModel>()
+                    ViewModel = container.Create<ViewModel>()
                 });
             // when an email selection changes this event will fire
             _explorer.SelectionChange += ExplorerSelectionChange;

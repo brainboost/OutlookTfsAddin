@@ -7,7 +7,7 @@ namespace OutlookTfs
     /// <summary>
     /// ViewModel base class
     /// </summary>
-    public class ViewModel : IViewModel, INotifyPropertyChanged
+    public class ViewModel : INotifyPropertyChanged
     {
         public string ItemType { get; set; }
 
@@ -30,8 +30,13 @@ namespace OutlookTfs
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        #region Commands
         public ICommand OkCommand { get; set; }
 
         public ICommand ChangeConnectionCommand { get; set; }
+
+        public ICommand CloseCommand { get; set; }
+
+        #endregion
     }
 }
