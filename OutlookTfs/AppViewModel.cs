@@ -12,10 +12,15 @@ namespace OutlookTfs
     public class AppViewModel : INotifyPropertyChanged
     {
         private TfsTeamProjectCollection _tfsConnection;
-        private ProjectInfo[] _tfsProjects;
+        private ProjectInfo _tfsProjects;
         private string _tfsServer;
-        private string _itemType = "bug";
+        private string _itemType = "Bug";
         private ObservableCollection<string> _itemTypes;
+        private ObservableCollection<string> _users;
+        private string _project;
+        private string _areaPath;
+        private string _iteration;
+        private string _assignedTo;
 
         public string ItemType
         {
@@ -30,8 +35,12 @@ namespace OutlookTfs
 
         public ObservableCollection<string> ItemTypes
         {
-            get { return _itemTypes ?? (_itemTypes = new ObservableCollection<string> {"bug", "task"}); }
-            set { _itemTypes = value; }
+            get { return _itemTypes ?? (_itemTypes = new ObservableCollection<string> { _itemType }); }
+            set
+            {
+                _itemTypes = value;
+                OnPropertyChanged("ItemTypes");
+            }
         }
 
         public string TfsServer
@@ -56,14 +65,67 @@ namespace OutlookTfs
             }
         }
 
-        public ProjectInfo[] TfsProjects
+        public ProjectInfo TfsProject
         {
             get { return _tfsProjects; }
             set
             {
-                if (_tfsProjects == value) return;
+                if (_tfsProjects != null && value != null && _tfsProjects.Name == value.Name) return;
                 _tfsProjects = value;
-                OnPropertyChanged("TfsProjects");
+                OnPropertyChanged("TfsProject");
+            }
+        }
+
+        public string AreaPath
+        {
+            get { return _areaPath; }
+            set
+            {
+                if (_areaPath == value) return;
+                _areaPath = value;
+                OnPropertyChanged("AreaPath");
+            }
+        }
+        
+        public string Iteration
+        {
+            get { return _iteration; }
+            set
+            {
+                if (_iteration == value) return;
+                _iteration = value;
+                OnPropertyChanged("Iteration");
+            }
+        }
+
+        //public string Project
+        //{
+        //    get { return _project; }
+        //    set
+        //    {
+        //        if (_project == value) return;
+        //        _project = value;
+        //        OnPropertyChanged("Project");
+        //    }
+        //}
+        public ObservableCollection<string> Users
+        {
+            get { return _users ?? (_users = new ObservableCollection<string>()); }
+            set
+            {
+                _users = value;
+                OnPropertyChanged("Users");
+            }
+        }
+
+        public string AssignedTo
+        {
+            get { return _assignedTo; }
+            set
+            {
+                if (_assignedTo == value) return;
+                _assignedTo = value;
+                OnPropertyChanged("AssignedTo");
             }
         }
 
