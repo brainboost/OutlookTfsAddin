@@ -126,7 +126,7 @@ namespace OutlookTfs
                 {
                     ViewModel.TfsProject = proj;
                     ViewModel.AreaPath = proj.Name;
-                    var store = (WorkItemStore) tfs.GetService(typeof (WorkItemStore));
+                    var store = (WorkItemStore)tfs.GetService(typeof(WorkItemStore));
                     if (store != null && store.Projects != null)
                     {
                         WorkItemTypeCollection workItemTypes = store.Projects[proj.Name].WorkItemTypes;
@@ -135,12 +135,13 @@ namespace OutlookTfs
                             .Select(w => w.Name));
                     }
                     var ims = tfs.GetService<IIdentityManagementService>();
-                   // String[] searchValues = { "Team Foundation Valid Users" };
-                    //var users = ims.ReadIdentities(IdentitySearchFactor.AccountName, searchValues, MembershipQuery.Expanded, ReadIdentityOptions.ExtendedProperties);
-                    //Identity SIDS = ims.ReadIdentity(SearchFactor.Sid, "Team Foundation Valid Users", QueryMembership.Expanded); 
-                    //Identity[] UserId = ims.ReadIdentities(SearchFactor.Sid, SIDS.Members, QueryMembership.None); 
-                    TeamFoundationIdentity[] groups = ims.ListApplicationGroups(string.Empty, ReadIdentityOptions.None); 
-                    ViewModel.Users = new ObservableCollection<string>(groups.Select(g => g.DisplayName));
+                    var members = ims.ReadIdentity(GroupWellKnownDescriptors.EveryoneGroup, MembershipQuery.Expanded,
+                            ReadIdentityOptions.None)
+                            .Members;
+                    var nodeMembers = ims.ReadIdentities(members, MembershipQuery.Expanded, ReadIdentityOptions.TrueSid)
+                        .Where(m => m.IsActive && !m.IsContainer)
+                        .ToArray();
+                    ViewModel.Users = new ObservableCollection<string>(nodeMembers.Select(g => g.DisplayName));
                 }
             }
         }
