@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using OutlookTfs;
 
 namespace Tests
 {

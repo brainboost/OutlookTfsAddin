@@ -4,15 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Forms;
-using System.Windows.Media.Media3D;
 using Microsoft.Office.Interop.Outlook;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Framework.Client;
 using Microsoft.TeamFoundation.Framework.Common;
-using Microsoft.TeamFoundation.Server;
+using Microsoft.TeamFoundation.ProcessConfiguration.Client;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
+using Attachment = Microsoft.Office.Interop.Outlook.Attachment;
 using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace OutlookTfs
@@ -20,7 +19,7 @@ namespace OutlookTfs
     public class Presenter : IPresenter
     {
         private readonly IContainer _container;
-        private MailItem _mailItem;
+        //private MailItem _mailItem;
 
         public Presenter(IContainer container)
         {
@@ -44,7 +43,6 @@ namespace OutlookTfs
         /// <param name="mailItem"></param>
         public virtual void Initialize(MailItem mailItem)
         {
-            _mailItem = mailItem;
             ViewModel.OkCommand = new DelegateCommand(OkExecuteMethod, OkCanExecuteMethod);
             ViewModel.ChangeConnectionCommand = new DelegateCommand(ChangeConnectionExecuteMethod,
                 ChangeConnectionCanExecuteMethod);
@@ -58,6 +56,15 @@ namespace OutlookTfs
 
             // Configure data context to use specified viewmodel. 
             View.DataContext = ViewModel;
+            ViewModel.Title = mailItem.Subject;
+            ViewModel.Comment = mailItem.Body;
+            ViewModel.Attachments = new ObservableCollection<string>();
+            foreach (Attachment mailattach in mailItem.Attachments)
+            {
+                var file = Path.Combine(Environment.CurrentDirectory, mailattach.DisplayName);
+                mailattach.SaveAsFile(file);
+                ViewModel.Attachments.Add(file);
+            }
 
             ((Window)View).ShowDialog();
         }
@@ -76,37 +83,33 @@ namespace OutlookTfs
                 WorkItemType wit = workItemTypes[ViewModel.ItemType];
                 var workItem = new WorkItem(wit)
                 {
-                    Title = _mailItem.Subject,
-                    Description = _mailItem.Body,
+                    Title = ViewModel.Title,
+                    Description = ViewModel.Comment,
                     IterationPath = ViewModel.Iteration,
                     AreaPath = ViewModel.AreaPath,
-                    //IterationId = ViewModel.Iteration
                 };
                 var assigned = workItem.Fields["Assigned To"];
                 if (assigned != null)
                     assigned.Value = ViewModel.AssignedTo;
                 // create file attachments
-                foreach (Microsoft.Office.Interop.Outlook.Attachment mailattach in _mailItem.Attachments)
+                foreach (var attach in ViewModel.Attachments)
                 {
-                    var file = Path.Combine(Environment.CurrentDirectory, mailattach.DisplayName);
-                    mailattach.SaveAsFile(file);
-
                     workItem.Attachments.Add(
-                        new Microsoft.TeamFoundation.WorkItemTracking.Client.Attachment(file, mailattach.DisplayName));
+                        new Microsoft.TeamFoundation.WorkItemTracking.Client.Attachment(attach, attach));
                 }
                 var validationResult = workItem.Validate();
 
                 if (validationResult.Count == 0)
                 {
                     workItem.Save();
-                    MessageBox.Show(string.Format("Created bug {0}", workItem.Id));
+                    if (MessageBox.Show(string.Format("Created bug {0}", workItem.Id)) == DialogResult.OK)
+                        Dispose();
                 }
                 else
                 {
                     var tt = new StringBuilder();
                     foreach (var res in validationResult)
                         tt.AppendLine(res.ToString());
-
                     MessageBox.Show(tt.ToString());
                 }
             }
@@ -142,6 +145,22 @@ namespace OutlookTfs
                         .Where(m => m.IsActive && !m.IsContainer)
                         .ToArray();
                     ViewModel.Users = new ObservableCollection<string>(nodeMembers.Select(g => g.DisplayName));
+                    var configSvc = tfs.GetService<TeamSettingsConfigurationService>();
+                    var configs = configSvc.GetTeamConfigurationsForUser(new[] { proj.Uri }).ToList();
+                    foreach (TeamConfiguration config in configs)
+                    {
+                        TeamSettings ts = config.TeamSettings;
+                        ViewModel.Iterations = new ObservableCollection<string>(ts.IterationPaths);
+                    }
+                    TfsTeamService teamService = tfs.GetService<TfsTeamService>();
+                    Guid defaultTeamId = teamService.GetDefaultTeamId(proj.Uri);
+
+                    var conf = configs.FirstOrDefault(c => c.TeamId == defaultTeamId);
+                    if (conf != null)
+                    {
+                        ViewModel.Areas =
+                            new ObservableCollection<string>(conf.TeamSettings.TeamFieldValues.Select(f => f.Value));
+                    }
                 }
             }
         }
@@ -159,6 +178,11 @@ namespace OutlookTfs
         public virtual bool ChangeConnectionCanExecuteMethod(object para)
         {
             return true;
+        }
+
+        public void Dispose()
+        {
+            ((Window)View).Close();
         }
     }
 }

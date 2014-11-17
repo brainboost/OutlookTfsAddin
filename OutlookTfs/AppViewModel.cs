@@ -21,6 +21,11 @@ namespace OutlookTfs
         private string _areaPath;
         private string _iteration;
         private string _assignedTo;
+        private ObservableCollection<string> _iterations;
+        private ObservableCollection<string> _areas;
+        private string _title;
+        private string _comment;
+        private ObservableCollection<string> _attachments;
 
         public string ItemType
         {
@@ -86,7 +91,17 @@ namespace OutlookTfs
                 OnPropertyChanged("AreaPath");
             }
         }
-        
+        public ObservableCollection<string> Areas
+        {
+            get { return _areas; }
+            set
+            {
+                if (_areas == value) return;
+                _areas = value;
+                OnPropertyChanged("Areas");
+            }
+        }
+
         public string Iteration
         {
             get { return _iteration; }
@@ -95,6 +110,17 @@ namespace OutlookTfs
                 if (_iteration == value) return;
                 _iteration = value;
                 OnPropertyChanged("Iteration");
+            }
+        }
+
+        public ObservableCollection<string> Iterations
+        {
+            get { return _iterations; }
+            set
+            {
+                if (_iterations == value) return;
+                _iterations = value;
+                OnPropertyChanged("Iterations");
             }
         }
 
@@ -126,6 +152,38 @@ namespace OutlookTfs
                 if (_assignedTo == value) return;
                 _assignedTo = value;
                 OnPropertyChanged("AssignedTo");
+            }
+        }
+
+        public string Title
+        {
+            get { return _title; }
+            set
+            {
+                if (_title == value) return;
+                _title = value;
+                OnPropertyChanged("Title");
+            }
+        }
+
+        public string Comment
+        {
+            get { return _comment; }
+            set
+            {
+                if (_comment == value) return;
+                _comment = value;
+                OnPropertyChanged("Comment");
+            }
+        }
+
+        public ObservableCollection<string> Attachments
+        {
+            get { return _attachments; }
+            set
+            {
+                _attachments = value;
+                OnPropertyChanged("Comment");
             }
         }
 

@@ -21,7 +21,7 @@ namespace WpfApplication1
             fakeMailItem.SetupAllProperties();
             fakeMailItem.Object.Subject = "test subj";
             fakeMailItem.Object.Body = "test body";
-            fakeMailItem.SetupGet(m => m.Attachments).Returns(Mock.Of<Attachments>);
+            fakeMailItem.SetupGet(m => m.Attachments).Returns(Mock.Of<Attachments>());
             var _container = new SimpleContainer()
                 .RegisterSingle(fakeExplorer)
                 .Register<IView>(container => new NewWorkItem())

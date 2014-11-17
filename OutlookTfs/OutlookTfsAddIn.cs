@@ -11,7 +11,6 @@ namespace OutlookTfs
         // the prompt and action name
         private const string CreateNewPrompt = "New TFS WorkItem";
         private const string TfsServer = "http://vtom2010:8080/tfs/main";
-        private const string TfsProject = "HELM";
 
         private Explorer _explorer;
         private SimpleContainer _container;
@@ -19,7 +18,7 @@ namespace OutlookTfs
         private void OutlookTfsAddInStartup(object sender, EventArgs e)
         {
             _explorer = Application.ActiveExplorer();
-            _container = new SimpleContainer() //{ Configuration = new Dictionary<string, object>() { { "TfsServer", "http://vtom2010:8080/tfs/main" } } }
+            _container = new SimpleContainer() 
                 .RegisterSingle(_explorer)
                 .Register<TfsConnection>(container => TfsTeamProjectCollectionFactory.GetTeamProjectCollection(new Uri(TfsServer)))
                 .Register<IView>(container => new NewWorkItem())
@@ -77,53 +76,6 @@ namespace OutlookTfs
                             {
                                 var form = _container.Create<IPresenter>();
                                 form.Initialize(mailItem);
-
-                                //    //new CreateWorkItem();
-                                //var dialogRes = form.ShowDialog();
-                                //if (dialogRes == DialogResult.Cancel)
-                                //    return;
-                                //TfsTeamProjectCollection tfs = 
-                                //    //TfsTeamProjectCollectionFactory.GetTeamProjectCollection(new Uri(TfsServer));
-                                //var store = (WorkItemStore)tfs.GetService(typeof(WorkItemStore));
-
-                                //WorkItemTypeCollection workItemTypes = store.Projects[TfsProject].WorkItemTypes;
-                                //WorkItemType wit = workItemTypes["bug"];
-                                //var workItem = new WorkItem(wit)
-                                //                   {
-                                //                       Title = mailItem.Subject,
-                                //                       Description = mailItem.Body,
-                                //                       //IterationPath = "Iteration 3",
-                                //                       AreaPath = "HELM",
-                                //                   };
-                                ////if (MessageBox.Show(mailItem.Body, "Text", MessageBoxButtons.OKCancel) ==
-                                ////    DialogResult.Cancel)
-                                ////    return;
-                                //var assigned = workItem.Fields["Assigned To"];
-                                //assigned.Value = tfs.AuthorizedIdentity.DisplayName;
-
-                                //foreach (Microsoft.Office.Interop.Outlook.Attachment mailattach in mailItem.Attachments)
-                                //{
-                                //    var file = Path.Combine(Environment.CurrentDirectory, mailattach.DisplayName);
-                                //    mailattach.SaveAsFile(file);
-
-                                //    workItem.Attachments.Add(
-                                //        new Microsoft.TeamFoundation.WorkItemTracking.Client.Attachment(file, mailattach.DisplayName));
-                                //}
-                                //var validationResult = workItem.Validate();
-
-                                //if (validationResult.Count == 0)
-                                //{
-                                //    workItem.Save();
-                                //    MessageBox.Show(string.Format("Created bug {0}", workItem.Id));
-                                //}
-                                //else
-                                //{
-                                //    var tt = new StringBuilder();
-                                //    foreach (var res in validationResult)
-                                //        tt.AppendLine(res.ToString());
-
-                                //    MessageBox.Show(tt.ToString());
-                                //}
                             }
                         }
                         finally
@@ -131,7 +83,6 @@ namespace OutlookTfs
                             cancel = true;
                         }
                         break;
-
                 }
             }
             catch (System.Exception e)

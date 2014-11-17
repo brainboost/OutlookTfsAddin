@@ -1,8 +1,9 @@
-﻿using Microsoft.Office.Interop.Outlook;
+﻿using System;
+using Microsoft.Office.Interop.Outlook;
 
 namespace OutlookTfs
 {
-    public interface IPresenter
+    public interface IPresenter: IDisposable
     {
         /// <summary>
         /// Initializes this instance.
