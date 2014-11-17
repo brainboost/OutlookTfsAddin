@@ -12,14 +12,13 @@ using Microsoft.TeamFoundation.Framework.Common;
 using Microsoft.TeamFoundation.ProcessConfiguration.Client;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
 using Attachment = Microsoft.Office.Interop.Outlook.Attachment;
-using MessageBox = System.Windows.Forms.MessageBox;
+using MessageBox = System.Windows.MessageBox;
 
 namespace OutlookTfs
 {
     public class Presenter : IPresenter
     {
         private readonly IContainer _container;
-        //private MailItem _mailItem;
 
         public Presenter(IContainer container)
         {
@@ -88,6 +87,7 @@ namespace OutlookTfs
                     IterationPath = ViewModel.Iteration,
                     AreaPath = ViewModel.AreaPath,
                 };
+                workItem["Priority"] = ViewModel.Priority;
                 var assigned = workItem.Fields["Assigned To"];
                 if (assigned != null)
                     assigned.Value = ViewModel.AssignedTo;
@@ -98,11 +98,10 @@ namespace OutlookTfs
                         new Microsoft.TeamFoundation.WorkItemTracking.Client.Attachment(attach, attach));
                 }
                 var validationResult = workItem.Validate();
-
                 if (validationResult.Count == 0)
                 {
                     workItem.Save();
-                    if (MessageBox.Show(string.Format("Created bug {0}", workItem.Id)) == DialogResult.OK)
+                    if (MessageBox.Show(string.Format("Created bug {0}", workItem.Id)) == MessageBoxResult.OK)
                         Dispose();
                 }
                 else
@@ -151,6 +150,7 @@ namespace OutlookTfs
                     {
                         TeamSettings ts = config.TeamSettings;
                         ViewModel.Iterations = new ObservableCollection<string>(ts.IterationPaths);
+                        ViewModel.Iteration = ts.CurrentIterationPath;
                     }
                     TfsTeamService teamService = tfs.GetService<TfsTeamService>();
                     Guid defaultTeamId = teamService.GetDefaultTeamId(proj.Uri);

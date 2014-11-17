@@ -13,19 +13,19 @@ namespace OutlookTfs
     {
         private TfsTeamProjectCollection _tfsConnection;
         private ProjectInfo _tfsProjects;
-        private string _tfsServer;
-        private string _itemType = "Bug";
         private ObservableCollection<string> _itemTypes;
         private ObservableCollection<string> _users;
-        private string _project;
+        private ObservableCollection<string> _iterations;
+        private ObservableCollection<string> _areas;
+        private ObservableCollection<string> _attachments;
+        private string _tfsServer;
+        private string _itemType = "Bug";
         private string _areaPath;
         private string _iteration;
         private string _assignedTo;
-        private ObservableCollection<string> _iterations;
-        private ObservableCollection<string> _areas;
         private string _title;
         private string _comment;
-        private ObservableCollection<string> _attachments;
+        private int _priority = 2;
 
         public string ItemType
         {
@@ -124,16 +124,21 @@ namespace OutlookTfs
             }
         }
 
-        //public string Project
-        //{
-        //    get { return _project; }
-        //    set
-        //    {
-        //        if (_project == value) return;
-        //        _project = value;
-        //        OnPropertyChanged("Project");
-        //    }
-        //}
+        public int Priority
+        {
+            get { return _priority; }
+            set
+            {
+                if (_priority == value) return;
+                _priority = value;
+                OnPropertyChanged("Priority");
+            }
+        }
+
+        public int[] Priorities {
+            get { return new[] {1, 2, 3, 4}; }
+        }
+
         public ObservableCollection<string> Users
         {
             get { return _users ?? (_users = new ObservableCollection<string>()); }

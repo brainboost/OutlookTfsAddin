@@ -31,6 +31,6 @@
         <Label Content="Priority" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" Width="73"/>
         <Label Content="Iteration" Grid.Column="1" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.745,0.423" Width="58"/>
         <ComboBox Grid.Column="1" Margin="73,92,11,0" VerticalAlignment="Top" ItemsSource="{Binding Iterations, Mode=OneWay}" SelectedIndex="0" SelectedValue="{Binding Iteration}"/>
-        <ComboBox HorizontalAlignment="Left" Margin="87,92,0,0" VerticalAlignment="Top" Width="79"/>
+        <ComboBox HorizontalAlignment="Left" Margin="87,92,0,0" VerticalAlignment="Top" Width="79" ItemsSource="{Binding Priorities, Mode=OneWay}" SelectedValue="{Binding Priority}"/>
     </Grid>
 </Window>

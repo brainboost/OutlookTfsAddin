@@ -41,7 +41,7 @@ namespace OutlookTfs {
             base.Initialize();
             this.Application = this.GetHostItem<Microsoft.Office.Interop.Outlook.Application>(typeof(Microsoft.Office.Interop.Outlook.Application), "Application");
             Globals.OutlookTfsAddIn = this;
-            global::System.Windows.Forms.Application.EnableVisualStyles();
+           // global::System.Windows.Forms.Application.EnableVisualStyles();
             this.InitializeCachedData();
             this.InitializeControls();
             this.InitializeComponents();

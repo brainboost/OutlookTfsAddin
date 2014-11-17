@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using Microsoft.Office.Interop.Outlook;
 using Moq;
 using OutlookTfs;
@@ -21,7 +22,9 @@ namespace WpfApplication1
             fakeMailItem.SetupAllProperties();
             fakeMailItem.Object.Subject = "test subj";
             fakeMailItem.Object.Body = "test body";
-            fakeMailItem.SetupGet(m => m.Attachments).Returns(Mock.Of<Attachments>());
+            var atts = new Mock<Attachments>();
+            atts.Setup(a => a.GetEnumerator()).Returns(ProductList);
+            fakeMailItem.SetupGet(m => m.Attachments).Returns(atts.Object);
             var _container = new SimpleContainer()
                 .RegisterSingle(fakeExplorer)
                 .Register<IView>(container => new NewWorkItem())
@@ -34,6 +37,15 @@ namespace WpfApplication1
             
             var form = _container.Create<IPresenter>();
             form.Initialize(fakeMailItem.Object);
+        }
+
+        private static IEnumerator<Attachment> ProductList()
+        {
+            var atts = new Mock<Attachment>();
+            atts.SetupAllProperties();
+            atts.Object.DisplayName = "attachment";
+            atts.Setup(a => a.SaveAsFile(It.IsAny<string>()));
+            yield return atts.Object;
         }
     }
 
