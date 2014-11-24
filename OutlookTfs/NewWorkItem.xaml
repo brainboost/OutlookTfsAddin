@@ -4,33 +4,58 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:OutlookTfs" x:Class="OutlookTfs.NewWorkItem" 
-             mc:Ignorable="d" Title="New TFS item" WindowStyle="ToolWindow" Width="550" Height="340" >
+             mc:Ignorable="d" Title="New TFS item" WindowStyle="ToolWindow" Width="550" Height="530" MinWidth="450" MinHeight="400" >
     <Window.DataContext>
         <local:AppViewModel/>
     </Window.DataContext>
     <Grid Background="#FFEAE7E7" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" MinHeight="250"/>
+            <RowDefinition Height="Auto" MaxHeight="175" MinHeight="30"/>
+            <RowDefinition Height="32" MinHeight="32"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="160*"/>
             <ColumnDefinition Width="243*"/>
         </Grid.ColumnDefinitions>
-        <Label Content="Connection" HorizontalAlignment="Left" Margin="10,12,0,0" VerticalAlignment="Top" Width="73" Height="26"/>
-        <TextBox Height="23" Margin="88,16,35,0" TextWrapping="Wrap" Text="{Binding TfsConnection.DisplayName, Mode=OneWay}" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-        <Button Content="..." Margin="0,18,10,0" VerticalAlignment="Top" RenderTransformOrigin="0.531,0.45" Grid.Column="1" ToolTip="Change TFS connection" Cursor="Hand" Command="{Binding ChangeConnectionCommand}" UseLayoutRounding="True" HorizontalAlignment="Right" Width="20" Height="20"/>
+        <Label Content="Connection" HorizontalAlignment="Left" Margin="10,13,0,0" VerticalAlignment="Top" Width="73" Height="26"/>
+        <TextBox Height="23" Margin="88,15,35,0" TextWrapping="Wrap" Text="{Binding TfsConnection.DisplayName, Mode=OneWay}" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <Button Content="..." Margin="0,16,10,0" VerticalAlignment="Top" RenderTransformOrigin="0.531,0.45" Grid.Column="1" ToolTip="Change TFS connection" Cursor="Hand" Command="{Binding ChangeConnectionCommand}" UseLayoutRounding="True" HorizontalAlignment="Right" Width="20" Height="20"/>
         <Label Content="Item type" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" Width="73" Height="26"/>
         <ComboBox Margin="88,53,10,0" VerticalAlignment="Top" ItemsSource="{Binding ItemTypes, Mode=OneWay}" SelectedIndex="0" SelectedValue="{Binding ItemType}" Height="22"/>
-        <Button Content="Cancel" HorizontalAlignment="Right" Margin="0,0,11,10" VerticalAlignment="Bottom" Width="75" IsCancel="True" Grid.Column="1" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Height="20" />
-        <Button Content="Create" HorizontalAlignment="Right" Margin="0,0,89,10" VerticalAlignment="Bottom" Width="75" IsDefault="True" Grid.Column="1" Command="{Binding OkCommand}" RenderTransformOrigin="-0.92,0.3" Height="20"/>
+        <Button Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75" IsCancel="True" Grid.Column="1" Command="{Binding CloseCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" Height="20" Grid.Row="2" />
+        <Button Content="Create" HorizontalAlignment="Right" Margin="0,0,90,10" VerticalAlignment="Bottom" Width="75" IsDefault="True" Grid.Column="1" Command="{Binding OkCommand}" Height="20" Grid.Row="2"/>
         <Label Content="Assign To" HorizontalAlignment="Left" Margin="10,123,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.053,0.346" Width="73" Height="26"/>
-        <ComboBox Margin="88,123,9,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="22" ItemsSource="{Binding Users, Mode=OneWay}" SelectedValue="{Binding AssignedTo}"/>
+        <ComboBox Margin="88,123,10,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Height="22" ItemsSource="{Binding Users, Mode=OneWay}" SelectedValue="{Binding AssignedTo}"/>
         <Label Content="Title" HorizontalAlignment="Left" Margin="10,158,0,0" VerticalAlignment="Top" Width="73" Height="26"/>
         <TextBox Height="23" Margin="87,161,11,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.ColumnSpan="2" Text="{Binding Title}"/>
         <Label Content="Area" Grid.Column="1" HorizontalAlignment="Left" Margin="0,50,0,0" VerticalAlignment="Top"/>
-        <ComboBox Grid.Column="1" Margin="42,53,11,0" VerticalAlignment="Top" ItemsSource="{Binding Areas, Mode=OneWay}" SelectedIndex="0" SelectedValue="{Binding AreaPath}"/>
+        <ComboBox Grid.Column="1" Margin="42,53,10,0" VerticalAlignment="Top" ItemsSource="{Binding Areas, Mode=OneWay}" SelectedIndex="0" SelectedValue="{Binding AreaPath}"/>
         <Label Content="Comment" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Width="73"/>
-        <TextBox Margin="87,189,11,35" TextWrapping="Wrap" Grid.ColumnSpan="2" Text="{Binding Comment}"/>
+        <TextBox Margin="87,189,10,10" TextWrapping="Wrap" Grid.ColumnSpan="2" Text="{Binding Comment}" ClipToBounds="True" MinHeight="23"/>
         <Label Content="Priority" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" Width="73"/>
         <Label Content="Iteration" Grid.Column="1" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.745,0.423" Width="58"/>
-        <ComboBox Grid.Column="1" Margin="73,92,11,0" VerticalAlignment="Top" ItemsSource="{Binding Iterations, Mode=OneWay}" SelectedIndex="0" SelectedValue="{Binding Iteration}"/>
+        <ComboBox Grid.Column="1" Margin="73,92,10,0" VerticalAlignment="Top" ItemsSource="{Binding Iterations, Mode=OneWay}" SelectedIndex="0" SelectedValue="{Binding Iteration}"/>
         <ComboBox HorizontalAlignment="Left" Margin="87,92,0,0" VerticalAlignment="Top" Width="79" ItemsSource="{Binding Priorities, Mode=OneWay}" SelectedValue="{Binding Priority}"/>
+        <Expander Header="Attachments" Margin="10,10,10,0" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Grid.Row="1">
+            <ListView 
+        		x:Name="listView1"
+        		ItemsSource="{Binding Attachments}"
+        		IsSynchronizedWithCurrentItem="True" ClipToBounds="True">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Add" Width="30">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding RelativeSource={RelativeSource AncestorType=local:AttachModel}, Path=Chosen}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path}" Header="File" Width="350" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Comment}" Header="Comment" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Expander>
     </Grid>
 </Window>

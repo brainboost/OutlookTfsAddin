@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Server;
@@ -17,7 +18,7 @@ namespace OutlookTfs
         private ObservableCollection<string> _users;
         private ObservableCollection<string> _iterations;
         private ObservableCollection<string> _areas;
-        private ObservableCollection<string> _attachments;
+        private ObservableCollection<AttachModel> _attachments;
         private string _tfsServer;
         private string _itemType = "Bug";
         private string _areaPath;
@@ -182,13 +183,13 @@ namespace OutlookTfs
             }
         }
 
-        public ObservableCollection<string> Attachments
+        public ObservableCollection<AttachModel> Attachments
         {
             get { return _attachments; }
             set
             {
                 _attachments = value;
-                OnPropertyChanged("Comment");
+                OnPropertyChanged("Attachments");
             }
         }
 
@@ -215,5 +216,50 @@ namespace OutlookTfs
         public ICommand CloseCommand { get; set; }
 
         #endregion
+    }
+
+    public class AttachModel : INotifyPropertyChanged
+    {
+        private bool _chosen;
+        private string _path;
+        private string _comment;
+
+        public bool Chosen
+        {
+            get { return _chosen; }
+            set
+            {
+                _chosen = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        public string Path
+        {
+            get { return _path; }
+            set
+            {
+                _path = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        public string Comment
+        {
+            get { return _comment; }
+            set
+            {
+                _comment = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

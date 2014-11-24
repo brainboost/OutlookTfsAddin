@@ -18,13 +18,6 @@ namespace OutlookTfs
 {
     public class Presenter : IPresenter
     {
-        private readonly IContainer _container;
-
-        public Presenter(IContainer container)
-        {
-            _container = container;
-        }
-
         /// <summary>
         /// Gets or sets the view.
         /// </summary>
@@ -57,12 +50,17 @@ namespace OutlookTfs
             View.DataContext = ViewModel;
             ViewModel.Title = mailItem.Subject;
             ViewModel.Comment = mailItem.Body;
-            ViewModel.Attachments = new ObservableCollection<string>();
+            ViewModel.Attachments = new ObservableCollection<AttachModel>();
             foreach (Attachment mailattach in mailItem.Attachments)
             {
                 var file = Path.Combine(Environment.CurrentDirectory, mailattach.DisplayName);
                 mailattach.SaveAsFile(file);
-                ViewModel.Attachments.Add(file);
+                ViewModel.Attachments.Add(new AttachModel
+                {
+                    Path = file,
+                    Comment = mailattach.DisplayName,
+                    Chosen = true
+                });
             }
 
             ((Window)View).ShowDialog();
@@ -92,10 +90,10 @@ namespace OutlookTfs
                 if (assigned != null)
                     assigned.Value = ViewModel.AssignedTo;
                 // create file attachments
-                foreach (var attach in ViewModel.Attachments)
+                foreach (var attach in ViewModel.Attachments.Where(a => a.Chosen))
                 {
                     workItem.Attachments.Add(
-                        new Microsoft.TeamFoundation.WorkItemTracking.Client.Attachment(attach, attach));
+                        new Microsoft.TeamFoundation.WorkItemTracking.Client.Attachment(attach.Path, attach.Comment));
                 }
                 var validationResult = workItem.Validate();
                 if (validationResult.Count == 0)

@@ -23,7 +23,7 @@ namespace OutlookTfs
                 .Register<TfsConnection>(container => TfsTeamProjectCollectionFactory.GetTeamProjectCollection(new Uri(TfsServer)))
                 .Register<IView>(container => new NewWorkItem())
                 .Register<AppViewModel>(container => new AppViewModel())
-                .Register<IPresenter>(container => new Presenter(container)
+                .Register<IPresenter>(container => new Presenter
                 {
                     View = container.Create<IView>(),
                     ViewModel = container.Create<AppViewModel>()
