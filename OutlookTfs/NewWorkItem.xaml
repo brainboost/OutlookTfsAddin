@@ -47,7 +47,7 @@
                         <GridViewColumn Header="Add" Width="30">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsChecked="{Binding RelativeSource={RelativeSource AncestorType=local:AttachModel}, Path=Chosen}" />
+                                    <CheckBox IsChecked="{Binding Chosen}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
