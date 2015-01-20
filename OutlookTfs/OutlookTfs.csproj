@@ -45,9 +45,9 @@
     <TargetFrameworkProfile />
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <PublishUrl>C:\Projects\GitHub\OutlookTfsAddin\OutlookTfs\publish\</PublishUrl>
-    <InstallUrl>https://raw.github.com/brainboost/OutlookTfsAddin/master/publish/</InstallUrl>
+    <InstallUrl>https://github.com/brainboost/OutlookTfsAddin/raw/master/OutlookTfs/publish/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.7</ApplicationVersion>
+    <ApplicationVersion>1.0.0.8</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
