@@ -31,7 +31,7 @@
     <DefineConstants>VSTO40</DefineConstants>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <IsWebBootstrapper>False</IsWebBootstrapper>
+    <IsWebBootstrapper>True</IsWebBootstrapper>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
@@ -44,19 +44,19 @@
     <VSTO_TrustAssembliesLocation>true</VSTO_TrustAssembliesLocation>
     <TargetFrameworkProfile />
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>C:\Projects\Office\OutlookTfs\OutlookTfs\publish\</PublishUrl>
-    <InstallUrl />
-    <TargetCulture>ru</TargetCulture>
-    <ApplicationVersion>1.0.0.5</ApplicationVersion>
+    <PublishUrl>C:\Projects\GitHub\OutlookTfsAddin\OutlookTfs\publish\</PublishUrl>
+    <InstallUrl>https://raw.github.com/brainboost/OutlookTfsAddin/master/publish/</InstallUrl>
+    <TargetCulture>en</TargetCulture>
+    <ApplicationVersion>1.0.0.7</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
-    <UpdateInterval>7</UpdateInterval>
+    <UpdateInterval>0</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
-    <ProductName>OutlookTfs</ProductName>
-    <PublisherName>НГМЛ</PublisherName>
-    <SupportUrl />
-    <FriendlyName>OutlookTfs</FriendlyName>
-    <OfficeApplicationDescription />
+    <ProductName>Outlook TFS addin</ProductName>
+    <PublisherName>%40brainboost</PublisherName>
+    <SupportUrl>https://github.com/brainboost/OutlookTfsAddin</SupportUrl>
+    <FriendlyName>Outlook TFS addin</FriendlyName>
+    <OfficeApplicationDescription>Creates a new TFS item from the email</OfficeApplicationDescription>
     <LoadBehavior>3</LoadBehavior>
   </PropertyGroup>
   <ItemGroup>
@@ -73,21 +73,11 @@
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Office.PIARedist.2007">
-      <Visible>False</Visible>
-      <ProductName>Microsoft Office 2007 Primary Interop Assemblies</ProductName>
-      <Install>true</Install>
+      <Install>false</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
       <Visible>False</Visible>
       <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
