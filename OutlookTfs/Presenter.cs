@@ -142,23 +142,40 @@ namespace OutlookTfs
                         .Where(m => m.IsActive && !m.IsContainer)
                         .ToArray();
                     ViewModel.Users = new ObservableCollection<string>(nodeMembers.Select(g => g.DisplayName));
-                    var configSvc = tfs.GetService<TeamSettingsConfigurationService>();
-                    var configs = configSvc.GetTeamConfigurationsForUser(new[] { proj.Uri }).ToList();
-                    foreach (TeamConfiguration config in configs)
-                    {
-                        TeamSettings ts = config.TeamSettings;
-                        ViewModel.Iterations = new ObservableCollection<string>(ts.IterationPaths);
-                        ViewModel.Iteration = ts.CurrentIterationPath;
-                    }
-                    TfsTeamService teamService = tfs.GetService<TfsTeamService>();
-                    Guid defaultTeamId = teamService.GetDefaultTeamId(proj.Uri);
 
-                    var conf = configs.FirstOrDefault(c => c.TeamId == defaultTeamId);
-                    if (conf != null)
+                    var selectedProject = store.Projects.Cast<Project>().FirstOrDefault(p => p.Name == proj.Name);
+                    var iters = new ObservableCollection<string> { proj.Name };
+                    var areas = new ObservableCollection<string> { proj.Name };
+                    if (selectedProject == null) return;
+                    // Area paths
+                    if (selectedProject.AreaRootNodes != null)
                     {
-                        ViewModel.Areas =
-                            new ObservableCollection<string>(conf.TeamSettings.TeamFieldValues.Select(f => f.Value));
+                        foreach (Node area in selectedProject.AreaRootNodes)
+                        {
+                            areas.Add(area.Path);
+                            foreach (Node item in area.ChildNodes)
+                            {
+                                areas.Add(item.Path);
+                            }
+                        }
                     }
+                    ViewModel.Areas = areas;
+
+                    // Iterations
+                    if (selectedProject.IterationRootNodes != null)
+                    {
+                        foreach (Node node in selectedProject.IterationRootNodes)
+                        {
+                            iters.Add(node.Path);
+                            foreach (Node item in node.ChildNodes)
+                            {
+                                iters.Add(item.Path);
+                            }
+                        }
+                    }
+                    ViewModel.Iterations = iters;
+                    if (iters.Count > 0)
+                        ViewModel.Iteration = iters[0];
                 }
             }
         }

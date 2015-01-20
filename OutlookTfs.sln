@@ -27,7 +27,6 @@ Global
 		{4A5D9E6D-ACC6-4684-8133-734AE353C20E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4A5D9E6D-ACC6-4684-8133-734AE353C20E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A5D9E6D-ACC6-4684-8133-734AE353C20E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4A5D9E6D-ACC6-4684-8133-734AE353C20E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
