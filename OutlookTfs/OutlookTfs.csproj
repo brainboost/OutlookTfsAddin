@@ -47,7 +47,7 @@
     <PublishUrl>C:\Projects\GitHub\OutlookTfsAddin\OutlookTfs\publish\</PublishUrl>
     <InstallUrl>https://github.com/brainboost/OutlookTfsAddin/raw/master/OutlookTfs/publish/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.0.0.8</ApplicationVersion>
+    <ApplicationVersion>1.0.0.10</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>

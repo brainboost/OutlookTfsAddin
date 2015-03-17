@@ -53,7 +53,7 @@ namespace OutlookTfs
             ViewModel.Attachments = new ObservableCollection<AttachModel>();
             foreach (Attachment mailattach in mailItem.Attachments)
             {
-                var file = Path.Combine(Environment.CurrentDirectory, mailattach.DisplayName);
+                var file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.InternetCache), mailattach.DisplayName);
                 mailattach.SaveAsFile(file);
                 ViewModel.Attachments.Add(new AttachModel
                 {
@@ -127,26 +127,26 @@ namespace OutlookTfs
                     ViewModel.TfsProject = proj;
                     ViewModel.AreaPath = proj.Name;
                     var store = (WorkItemStore)tfs.GetService(typeof(WorkItemStore));
+                    Project selectedProject = null;
                     if (store != null && store.Projects != null)
                     {
                         WorkItemTypeCollection workItemTypes = store.Projects[proj.Name].WorkItemTypes;
                         ViewModel.ItemTypes = new ObservableCollection<string>(workItemTypes
                             .Cast<WorkItemType>()
                             .Select(w => w.Name));
+                        var ims = tfs.GetService<IIdentityManagementService>();
+                        var members = ims.ReadIdentity(GroupWellKnownDescriptors.EveryoneGroup, MembershipQuery.Expanded,
+                                ReadIdentityOptions.None)
+                                .Members;
+                        var nodeMembers = ims.ReadIdentities(members, MembershipQuery.Expanded, ReadIdentityOptions.TrueSid)
+                            .Where(m => m.IsActive && !m.IsContainer)
+                            .ToArray();
+                        ViewModel.Users = new ObservableCollection<string>(nodeMembers.Select(g => g.DisplayName));
+                        selectedProject = store.Projects.Cast<Project>().FirstOrDefault(p => p.Name == proj.Name);
                     }
-                    var ims = tfs.GetService<IIdentityManagementService>();
-                    var members = ims.ReadIdentity(GroupWellKnownDescriptors.EveryoneGroup, MembershipQuery.Expanded,
-                            ReadIdentityOptions.None)
-                            .Members;
-                    var nodeMembers = ims.ReadIdentities(members, MembershipQuery.Expanded, ReadIdentityOptions.TrueSid)
-                        .Where(m => m.IsActive && !m.IsContainer)
-                        .ToArray();
-                    ViewModel.Users = new ObservableCollection<string>(nodeMembers.Select(g => g.DisplayName));
-
-                    var selectedProject = store.Projects.Cast<Project>().FirstOrDefault(p => p.Name == proj.Name);
+                    if (selectedProject == null) return;
                     var iters = new ObservableCollection<string> { proj.Name };
                     var areas = new ObservableCollection<string> { proj.Name };
-                    if (selectedProject == null) return;
                     // Area paths
                     if (selectedProject.AreaRootNodes != null)
                     {
